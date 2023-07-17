@@ -1,0 +1,60 @@
+<view class="wrapper">
+  <view class="player" tt:if="{{cameraOn && show}}">
+    <rtc-room binderror="handleRtcRoomError"
+	device-position="front"
+	mode="camera">
+    </rtc-room>
+  </view>
+  
+  <view class="pageInfo">
+    <view class="timeinfo">
+      <image class="infoimg" src='/image/info.png' />
+      本产品仅用于功能体验，单次使用时长不超过15分钟
+    </view>
+  
+  
+    <view class="title">
+      音视频通话
+    </view>
+  
+    <view class="scene">
+      <view>
+        本场景支持与PC端、Web端、抖音小程序互通
+        </view>
+      <view>
+        房间号相同即可
+      </view>
+      </view>
+      
+      
+      <form>
+        <view class="field">
+        <input id="roomId" class="input" name="roomId" type="text" placeholder="请输入房间号,仅限1～18位纯数字" bindinput="handleRoomIdinput"
+          value="{{roomId}}" />
+        <view class="error">{{roomIdError}}</view>
+      </view>
+      
+      <button class="submit" bindtap="handleJoinRoom">进入房间</button>
+      </form>
+      
+      <view class="toolbar">
+        <view class="icon" bindtap="handleMic">
+          <image class="img " src='/image/micOff.png' hidden="{{micOn}}" />
+          <image class="img" src='/image/micOn.png' hidden="{{!micOn}}" />
+        </view>
+        <view class="icon" bindtap="handleCamera">
+          <image class="img" src='/image/cameraOff.png' hidden="{{cameraOn}}" />
+          <image class="img" src='/image/cameraOn.png' hidden="{{!cameraOn}}" />
+        </view>
+        <view class="icon" bindtap="handleSound">
+          <image class="img" src='/image/earpiece.png' hidden="{{sound === 'speakerphone'}}" />
+          <image class="img" src='/image/speakerphone.png' hidden="{{sound === 'earpiece'}}" />
+        </view>
+
+    </view>
+<view class="version">Demo 版本 v2.0.0</view>
+
+</view>
+
+
+</view>

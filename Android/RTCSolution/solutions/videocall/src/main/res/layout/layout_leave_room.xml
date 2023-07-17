@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#272E3B">
+
+    <TextView
+        android:id="@+id/leave_title"
+        android:layout_width="300dp"
+        android:layout_height="116dp"
+        android:gravity="center"
+        android:text="@string/exit_room"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/leave_title"
+        android:background="#101319"/>
+
+    <TextView
+        android:id="@+id/leave_cancel"
+        android:layout_width="150dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/leave_confirm"
+        app:layout_constraintTop_toBottomOf="@id/leave_title" />
+
+    <TextView
+        android:id="@+id/leave_confirm"
+        android:layout_width="150dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:textColor="@color/red_100"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/leave_cancel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/leave_title" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="44dp"
+        app:layout_constraintLeft_toRightOf="@id/leave_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#101319"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

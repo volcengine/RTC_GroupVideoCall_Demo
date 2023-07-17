@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:background="#1D2129"
+    android:layout_height="64dp">
+
+    <com.volcengine.vertcdemo.videocall.view.BottomOptionView
+        android:id="@+id/group_microphone"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <com.volcengine.vertcdemo.videocall.view.BottomOptionView
+        android:id="@+id/group_camera"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <com.volcengine.vertcdemo.videocall.view.BottomOptionView
+        android:id="@+id/group_speaker_phone"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <com.volcengine.vertcdemo.videocall.view.BottomOptionView
+        android:id="@+id/group_media_stats"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+    <com.volcengine.vertcdemo.videocall.view.BottomOptionView
+        android:id="@+id/group_setting"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+</LinearLayout>

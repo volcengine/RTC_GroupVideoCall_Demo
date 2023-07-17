@@ -1,0 +1,159 @@
+.playerLayout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noLocalUser {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hasLocalUser {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.remoteShareVideoPlayers {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  .Player {
+    width: 332px;
+    height: 187px;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .userAvatar {
+      :global {
+        span {
+          width: 120px;
+          height: 120px;
+        }
+      }
+    }
+  }
+}
+
+.remoteScreenPlayerWrapper {
+  height: 100%;
+  width: calc(100% - 332px - 8px);
+  border-radius: 2px;
+  position: relative;
+  margin-right: 8px;
+  background: #000;
+}
+
+.remoteScreenPlayer {
+  width: 100%;
+  border-radius: 2px;
+  height: 100%;
+}
+
+.Player.speaking {
+  &::before {
+    content: '';
+    border: 2px solid #a0c0ff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.Player {
+  position: relative;
+  height: 100%;
+  flex: 1;
+  background: #222732;
+  overflow: hidden;
+}
+
+.noPlayer {
+  .Player();
+  visibility: hidden;
+}
+
+.videoPlayer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.userAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  :global {
+    span {
+      display: flex;
+      width: 160px;
+      height: 160px;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 64px;
+      border-radius: 50%;
+      color: #fff;
+      background: #272e3b;
+      position: absolute;
+    }
+  }
+}
+
+.userInfo {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 16px;
+  color: #fff;
+  background: rgba(0, 0, 0, 40%);
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.userMicrophone {
+  display: flex;
+  align-items: center;
+  transform: scale(0.666);
+}
+
+.userScreen {
+  display: flex;
+  align-items: center;
+  transform: scale(0.666);
+  color: #21c343;
+}
+
+.usernameWrapper {
+  display: flex;
+  .username {
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

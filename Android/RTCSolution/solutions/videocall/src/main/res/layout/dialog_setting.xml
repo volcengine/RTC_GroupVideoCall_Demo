@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#1D2129"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/setting_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="12dp"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="@string/set_up"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="85dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.volcengine.vertcdemo.videocall.view.SettingItemLayout
+            android:id="@+id/setting_resolution"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+        <com.volcengine.vertcdemo.videocall.view.SettingItemLayout
+            android:id="@+id/setting_quality"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+        <com.volcengine.vertcdemo.videocall.view.SettingItemLayout
+            android:id="@+id/setting_mirror"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

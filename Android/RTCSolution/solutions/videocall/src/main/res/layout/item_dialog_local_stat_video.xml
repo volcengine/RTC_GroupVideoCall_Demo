@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="156dp"
+    android:layout_margin="16dp"
+    android:background="#26000000">
+
+    <TextView
+        android:id="@+id/stats_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#86909C"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_resolution_title"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/resolution"
+        android:layout_marginLeft="28dp"
+        android:textColor="#86909C"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/stats_bitrate_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_resolution_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/stats_resolution_title"
+        app:layout_constraintTop_toBottomOf="@+id/stats_resolution_title" />
+
+    <TextView
+        android:id="@+id/stats_bitrate_title"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/bitrate"
+        android:textColor="#86909C"
+        app:layout_constraintLeft_toRightOf="@+id/stats_resolution_title"
+        app:layout_constraintRight_toLeftOf="@id/stats_frame_rate_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_bitrate_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/stats_bitrate_title"
+        app:layout_constraintTop_toBottomOf="@+id/stats_bitrate_title" />
+
+    <TextView
+        android:id="@+id/stats_frame_rate_title"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="45dp"
+        android:text="@string/frame_rate"
+        android:textColor="#86909C"
+        android:layout_marginRight="28dp"
+        app:layout_constraintLeft_toRightOf="@id/stats_bitrate_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_frame_rate_value"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/stats_frame_rate_title"
+        app:layout_constraintTop_toBottomOf="@+id/stats_frame_rate_title" />
+
+    <TextView
+        android:id="@+id/stats_delay_title"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/delay"
+        android:textColor="#86909C"
+        android:layout_marginLeft="28dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/stats_loss_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_delay_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/stats_delay_title"
+        app:layout_constraintTop_toBottomOf="@+id/stats_delay_title" />
+
+    <TextView
+        android:id="@+id/stats_loss_title"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/packet_loss_rate"
+        android:textColor="#86909C"
+        app:layout_constraintLeft_toRightOf="@id/stats_delay_title"
+        app:layout_constraintRight_toLeftOf="@id/stats_quality_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_loss_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/stats_loss_title"
+        app:layout_constraintTop_toBottomOf="@+id/stats_loss_title" />
+
+    <TextView
+        android:id="@+id/stats_quality_title"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/network_status"
+        android:textColor="#86909C"
+        android:layout_marginRight="28dp"
+        app:layout_constraintLeft_toRightOf="@id/stats_loss_title"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/stats_quality_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="@+id/stats_quality_title"
+        app:layout_constraintTop_toBottomOf="@+id/stats_quality_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

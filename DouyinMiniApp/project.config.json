@@ -1,0 +1,23 @@
+{
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "autoCompile": true,
+    "localPlugins": false,
+    "mockUpdate": false,
+    "mockLogin": false,
+    "scripts": false,
+    "autoPush": false
+  },
+  "appid": "Your_Douyin_Appid",
+  "projectname": "veRTC-demo",
+  "condition": {
+    "miniprogram": {
+      "current": -1,
+      "list": []
+    }
+  }
+}

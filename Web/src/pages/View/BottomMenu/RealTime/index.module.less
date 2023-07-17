@@ -1,0 +1,85 @@
+@import '../Setting/index.module.less';
+@import '../index.module.less';
+
+.realTimeDataModal {
+  .settingModal();
+
+  :global {
+    .ant-modal-body {
+      padding: 20px;
+      max-height: 418px;
+      overflow-y: auto;
+      .radio();
+    }
+  }
+}
+
+.realTimeDataWrapper {
+  overflow-y: auto;
+  max-height: 336px;
+}
+
+.dataCard {
+  margin-bottom: 20px;
+}
+
+.username {
+  color: #1d2129;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  height: 22px;
+  line-height: 22px;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+}
+
+.dataCardContent {
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  background: #f6f7fb;
+  border-radius: 2px;
+}
+
+.dataItem {
+  min-width: 33%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 64px;
+  padding: 9px 0;
+}
+
+.dataItemText {
+  color: #1d2129;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0.8;
+  min-height: 22px;
+  line-height: 22px;
+  margin-bottom: 2px;
+}
+
+.dataItemName {
+  color: #4e5969;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  height: 22px;
+  line-height: 22px;
+  opacity: 0.8;
+}
+
+.usernameWrapper {
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+}

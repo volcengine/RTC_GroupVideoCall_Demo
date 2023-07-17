@@ -1,0 +1,64 @@
+<view class="wrapper">
+  <scroll-view class="pagesWrapper" scroll-x="{{true}}"  bindscroll="hanldePageWrapperScroll" tt:if="{{viewMode==='stream'}}">
+    <view tt:for="{{streamPages}}" tt:for-index="pageIdx" tt:key="{{pageIdx +''+ totalPages}}" class="page">
+      <view tt:for="{{streamPages[pageIdx]}}" tt:key="{{item.userId+ item.mode}}" class="rtc-item" bindtap="handlePlayerTap" data-stream="{{item}}">
+        <rtc-room user-id="{{ item.userId }}" tt:key="{{item.userId+ item.mode}}" binderror="handleError" mode="{{ item.mode }}" tt:if="{{ item.mode === 'screen' ?  item.isScreen : item.cameraOn}}">
+        </rtc-room>
+
+        <view class="user-avatar" tt:if="{{ item.mode === 'screen' ?  false : !item.cameraOn}}">
+          {{ item.userId[0] }}
+        </view>
+
+        <view class="name-tag">
+          <image class="mic-status-img" src='/image/micOff.png' hidden="{{item.audioOn}}" />
+          <image class="mic-status-img" src='/image/micOn.png' hidden="{{!item.audioOn}}" />
+          <view class="name-text">{{ item.userId }}{{item.isMe?'(我)':''}}{{item.isScreen?'的共享屏幕':''}}</view>
+          </view>
+        </view>
+    </view>
+  </scroll-view>
+
+
+  <view class="screenPlayer {{viewMode === 'fullScreen' && 'fullScreenRTC'}}" bindtap="handleScreenPlayerTap" tt:if="{{viewMode!=='stream'}}">
+	<rtc-room user-id="{{ screenMembers[0] }}" binderror="handleError" mode="screen" >
+	</rtc-room>
+  </view>
+
+  <view class="pageInfo" hidden="{{totalPages === 1 || viewMode!=='stream'  }}">
+	{{ curPage }}/{{ totalPages }}
+  </view>
+
+  <!-- <view class="fullScreen" hidden="{{ viewMode==='stream' }}" bindtap="handleFullScreen">
+	<image class="screenImg " src='/image/exitFullScreen.png' hidden="{{viewMode === 'screen'}}" />
+	<image class="screenImg" src='/image/reqFullScreen.png' hidden="{{viewMode !== 'screen'}}" />
+  </view> -->
+
+
+  <view class="toolbar">
+    <view class="icon" bindtap="handleAudioCapture">
+		<image class="img " src='/image/micOff.png' hidden="{{micOn}}" />
+		<image class="img" src='/image/micOn.png' hidden="{{!micOn}}" />
+      <view class="icon-text">麦克风</view>
+    </view>
+    <view class="icon" bindtap="handleVideoCapture">
+		<image class="img" src='/image/cameraOff.png' hidden="{{cameraOn}}" />
+		<image class="img" src='/image/cameraOn.png' hidden="{{!cameraOn}}" />
+      <view class="icon-text">摄像头</view>
+    </view>
+    <view class="icon" bindtap="handleSwitchCamera">
+      <image class="img" src='/image/flip.png' />
+      <view class="icon-text">镜头翻转</view>
+    </view>
+	<view class="icon" bindtap="handleSwitchSound">
+		<image class="img" src='/image/earpiece.png' hidden="{{sound === 'speakerphone'}}" />
+		<image class="img" src='/image/speakerphone.png' hidden="{{sound === 'earpiece'}}" />
+      <view class="icon-text">{{ sound === "earpiece" ? "听筒": "扬声器" }}</view>
+    </view>
+    <view class="icon" bindtap="handleLeaveRoom">
+      <image class="img" src='/image/leave.png' />
+      <view class="icon-text">退房</view>
+    </view>
+  </view>
+
+
+</view>

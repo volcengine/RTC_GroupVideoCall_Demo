@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#282B30">
+
+    <FrameLayout
+        android:id="@+id/user_render_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/user_render_name_speaking"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_gravity="center"
+        android:background="@drawable/room_user_name_prefix_outer_bg"
+        android:padding="12dp"
+        android:src="@drawable/room_user_name_prefix_inner_bg" />
+
+    <TextView
+        android:id="@+id/user_render_name_prefix"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/room_user_name_prefix_bg"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="32dp" />
+
+    <LinearLayout
+        android:id="@+id/user_extra_info_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        android:background="@drawable/room_user_name_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:id="@+id/user_render_mic"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/microphone_enable_icon" />
+
+        <TextView
+            android:id="@+id/user_render_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="11dp" />
+    </LinearLayout>
+</FrameLayout>

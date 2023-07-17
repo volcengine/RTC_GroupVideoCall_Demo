@@ -1,0 +1,95 @@
+@import '../index.module.less';
+
+.menuButton {
+  .menuButton();
+}
+
+.shareMenuButton {
+  .menuButton();
+
+  width: 56px;
+}
+
+.menuButtonIcon {
+  .menuButtonIcon();
+}
+
+.settingModal {
+  :global {
+    .ant-modal-header {
+      padding: 12px 24px;
+    }
+
+    .ant-modal-close-x {
+      height: 47px;
+      line-height: 47px;
+    }
+
+    .ant-modal-title {
+      text-align: center;
+    }
+
+    .ant-modal-body {
+      padding: 20px 48px;
+
+      .ant-form-item {
+        margin-bottom: 20px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .ant-click-animating-mode {
+          display: none;
+        }
+
+        .ant-form-item-no-colon {
+          font-family: Inter;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          color: #4e5969;
+        }
+      }
+    }
+
+    .ant-modal-footer {
+      padding: 15px 20px;
+
+      .ant-btn {
+        border-radius: 2px;
+        color: #fff;
+        border: none;
+        box-shadow: none;
+        text-shadow: none;
+
+        &:active,
+        &:focus,
+        &:hover {
+          box-shadow: none;
+          background: #1664ff;
+          text-shadow: none;
+          color: #fff;
+        }
+
+        &::after {
+          display: none;
+        }
+      }
+
+      .ant-btn-default {
+        background: #f2f3f8;
+        color: #1d2129;
+
+        &:active,
+        &:focus,
+        &:hover {
+          box-shadow: none;
+          background: #f2f3f8;
+          text-shadow: none;
+          color: #1d2129;
+        }
+      }
+    }
+  }
+}

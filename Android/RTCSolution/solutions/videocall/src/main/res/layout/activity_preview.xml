@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#E5E5E5"
+    tools:context=".feature.preview.PreviewActivity">
+
+    <FrameLayout
+        android:id="@+id/preview_render_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/preview_render_disable"
+        android:layout_width="match_parent"
+        android:background="#1D2129"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/bg_round"
+            android:padding="30dp"
+            android:src="@drawable/ic_camera_off_white" />
+    </FrameLayout>
+
+    <View
+        android:background="#50000000"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/preview_back_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="45dp"
+        android:padding="12dp"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="212dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="95dp"
+        android:src="@drawable/preview_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/preview_input_et"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="234dp"
+        android:hint="@string/please_enter_room_number"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="18"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textColorHint="#86909C"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/preview_input_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/room_number_error_content_limit"
+        android:textColor="#F65656"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/preview_input_et" />
+
+    <TextView
+        android:id="@+id/preview_enter_btn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="144dp"
+        android:background="@drawable/preview_enter_room_background"
+        android:gravity="center"
+        android:text="@string/enter_the_room"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/preview_mic_btn"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/preview_icon_bg"
+        android:padding="13.5dp"
+        android:src="@drawable/microphone_disable_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/preview_camera_btn" />
+
+    <ImageView
+        android:id="@+id/preview_camera_btn"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/preview_icon_bg"
+        android:padding="13.5dp"
+        android:src="@drawable/camera_disable_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/preview_mic_btn"
+        app:layout_constraintRight_toLeftOf="@id/preview_speaker_phone_btn" />
+
+    <ImageView
+        android:id="@+id/preview_speaker_phone_btn"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/preview_icon_bg"
+        android:padding="13.5dp"
+        android:src="@drawable/earpiece_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/preview_camera_btn"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/preview_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textColor="#86909C"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

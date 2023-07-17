@@ -1,0 +1,150 @@
+.wrapper {
+  height: 100vh;
+  position: relative;
+}
+
+.pagesWrapper {
+  height: calc(100vh - 60px);
+  width: 100vw;
+  display: inline-block;
+  /* align-content: flex-start; */
+  background-color: #101319;
+  /* box-sizing: border-box; */
+  white-space: nowrap;
+}
+.page {
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.rtc-item {
+  height: 50%;
+  width: 50%;
+  /* border-radius: 4px;
+  margin-right: 16px;
+  margin-bottom: 16px; */
+  position: relative;
+  background-color: rgb(41, 43, 48);
+}
+.screenPlayer {
+  height: calc(100vh - 60px);
+  width: 100vw;
+  background: #101319;
+}
+
+.fullScreenRTC {
+  height: 100vw;
+  width: calc(100vh - 60px);
+  background: #101319;
+  transform-origin: 0 0;
+  transform: rotateZ(90deg) translateY(-100vw);
+}
+
+.user-avatar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #3e4045;
+  border-radius: 40px;
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+  line-height: 80px;
+  text-align: center;
+  color: #fff;
+}
+
+.name-tag {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  height: 22px;
+  border-radius: 11px;
+  padding-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.mic-status-img {
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+}
+
+.name-text {
+  font-weight: 400;
+  font-size: 11px;
+  color: white;
+}
+
+.pageInfo {
+  position: absolute;
+  right: 3px;
+  bottom: 63px;
+  height: 22px;
+  font-size: 11px;
+  color: white;
+  line-height: 22px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 11px;
+  padding: 0 5px;
+}
+
+.toolbar {
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #1d2129;
+}
+
+.icon {
+  height: 60px;
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-text {
+  font-weight: 400;
+  font-size: 12px;
+  color: #86909c;
+  margin-top: 4px;
+}
+
+.img {
+  width: 24px;
+  height: 24px;
+}
+
+.fullScreen {
+  height: 44px;
+  width: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  position: absolute;
+  right: 16px;
+  bottom: 76px;
+}
+
+.screenImg {
+  width: 24px;
+  height: 24px;
+}

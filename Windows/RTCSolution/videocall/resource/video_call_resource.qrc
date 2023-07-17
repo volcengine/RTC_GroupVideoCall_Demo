@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/img">
+		<file alias="video_call">image/video_call.png</file>
+		<file alias="videocall_logo">image/videocall_logo.png</file>
+		<file alias="videocall_camera_off">image/camera_off.svg</file>
+		<file alias="videocall_camera_on">image/camera_on.svg</file>
+		<file alias="videocall_mic_off">image/mic_off.svg</file>
+		<file alias="videocall_mic_on">image/mic_on.svg</file>
+		<file alias="videocall_beauty">image/beauty.svg</file>
+		<file alias="videocall_beauty_off">image/beauty_off.svg</file>
+		<file alias="videocall_real_time_data">image/real_time_data.svg</file>
+		<file alias="videocall_setting">image/setting.svg</file>
+		<file alias="videocall_share">image/share.svg</file>
+		<file alias="videocall_share_checked">image/share_checked.svg</file>
+		<file alias="videocall_end_call">image/end_call.svg</file>
+		<file alias="videocall_up_arrow">image/up_arrow.svg</file>
+		<file alias="videocall_down_arrow">image/down_arrow.svg</file>
+		<file alias="videocall_close">image/close.svg</file>
+		<file alias="videocall_radio_button_checked">image/radio_button_checked.svg</file>
+		<file alias="videocall_radio_button_unchecked">image/radio_button_unchecked.svg</file>
+    </qresource>
+	<qresource prefix="/videocall_translations">
+		<file alias="videocall_zh_CN">translations/videocall_zh_CN.qm</file>
+    </qresource>
+</RCC>
