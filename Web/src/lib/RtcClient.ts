@@ -112,7 +112,7 @@ export class RtcClient {
     this.engine = VERTC.createEngine(this.config.appId);
     try {
       await this.engine.registerExtension(beautyExtension);
-      beautyExtension.disable();
+      beautyExtension.disableBeauty();
       this.beautyEnabled = true;
     } catch (error) {
       console.error((error as any).message);

@@ -262,7 +262,7 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
 
         dispatch(setBeauty(false));
         if (RtcClient.beautyEnabled) {
-          beautyExtension.disable();
+          beautyExtension.disableBeauty();
         }
         await RtcClient.stopAudioCapture();
         await RtcClient.stopVideoCapture();

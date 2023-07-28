@@ -56,10 +56,10 @@ function BeautifyButton(props: BeautifyButtonProps) {
   const handleStartBeauty = () => {
     if (beautyOn) {
       dispatch(setBeauty(false));
-      beautyExtension.disable();
+      beautyExtension.disableBeauty();
     } else {
       dispatch(setBeauty(true));
-      beautyExtension.enable();
+      beautyExtension.enableBeauty();
     }
   };
 
