@@ -1,6 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { appId, appKey, volcAk, volcSk } from '@/appConfig';
-
 import baseQuery from './baseQuery';
 
 export const roomQuery = createApi({
@@ -25,15 +23,11 @@ export const roomQuery = createApi({
         url: '/login',
         method: 'POST',
         body: {
-          event_name: 'setAppInfo',
+          event_name: 'joinRTS',
           device_id: body.device_id,
           content: JSON.stringify({
-            app_id: appId,
-            app_key: appKey,
-            volc_ak: volcAk,
-            volc_sk: volcSk,
-            scenes_name: 'videocall',
             login_token: body.login_token,
+            scenes_name: 'videocall',
           }),
         },
       }),

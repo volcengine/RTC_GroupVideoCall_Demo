@@ -179,12 +179,20 @@ export const useJoin = (): [
 
       console.log('mediaDevices', mediaDevices);
       if (devicePermissions.video && formValues.publishVideo) {
-        await RtcClient.startVideoCapture();
-        RtcClient.setMirrorType(streamConfig.mirror);
+        try {
+          await RtcClient.startVideoCapture();
+          RtcClient.setMirrorType(streamConfig.mirror);
+        } catch (e) {
+          console.log('something goes wrong', e);
+        }
       }
 
       if (devicePermissions.audio) {
-        await RtcClient.startAudioCapture();
+        try {
+          await RtcClient.startAudioCapture();
+        } catch (e) {
+          console.log('something goes wrong', e);
+        }
       }
 
       if (!formValues.publishAudio) {
