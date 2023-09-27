@@ -66,6 +66,9 @@ export const getDataList = ({ data, type }: GetDataParameters, t: any): DataItem
     }
 
     let text = `${(statData as unknown as any)?.[stat] ?? ''}`;
+    const num = Math.floor(Number(text) * 1000) / 1000;
+    text = num.toString();
+
     if (stat === 'resolution') {
       if (data.isLocal) {
         text = `${(statData as unknown as LocalVideoStats)?.encodedFrameHeight! || '-'}P`;

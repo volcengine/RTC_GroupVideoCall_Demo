@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { appId, appKey, volcAk, volcSk } from '@/appConfig';
-
 import baseQuery from './baseQuery';
+import { appId, appKey, volcAk, volcSk } from '@/config';
 
 export const roomQuery = createApi({
   baseQuery,

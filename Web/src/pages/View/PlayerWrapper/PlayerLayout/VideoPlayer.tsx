@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { IUser, LocalUser } from '@/store/slices/room';
@@ -25,19 +25,27 @@ function VideoPlayer(props: IProps) {
 
   const domId = `${isLocalUser ? 'local' : 'remote'}-${user?.userId}-0`;
 
+  const startPublish = useMemo(() => {
+    return !!(user?.publishVideo || user?.publishAudio);
+  }, [user?.publishVideo, user?.publishAudio]);
+
   useEffect(() => {
     RtcClient.setVideoPlayer((user as IUser).userId!, domId);
-    // if (user?.publishVideo) {
-    //   if (user.publishVideo) {
-    //   } else {
-    //     RtcClient.setVideoPlayer((user as IUser).userId!, undefined);
-    //   }
-    // }
-
     return () => {
       RtcClient.setVideoPlayer((user as IUser).userId!, undefined);
     };
-  }, [user?.publishVideo, user?.publishAudio]);
+  }, [startPublish]);
+
+  let micSrcImg = MicrophoneOff;
+  const isMicrophoneOn = user?.publishAudio && !user?.audioPropertiesInfo?.linearVolume;
+  const isMicrophoneOff = !user?.publishAudio;
+  const hasIcon = isMicrophoneOn || isMicrophoneOff;
+  if (isMicrophoneOn) {
+    micSrcImg = MicrophoneOn;
+  }
+  if (isMicrophoneOff) {
+    micSrcImg = MicrophoneOff;
+  }
 
   return (
     <div
@@ -59,11 +67,7 @@ function VideoPlayer(props: IProps) {
         }}
       />
       <div className={styles.userInfo}>
-        {!user?.publishAudio && <Icon src={MicrophoneOff} className={styles.userMicrophone} />}
-
-        {user?.publishAudio && !user?.audioPropertiesInfo?.linearVolume && (
-          <Icon src={MicrophoneOn} className={styles.userMicrophone} />
-        )}
+        {hasIcon && <Icon src={micSrcImg} className={styles.userMicrophone} />}
         {user?.publishAudio && !!user?.audioPropertiesInfo?.linearVolume && (
           <img
             src={MicHasVolumeImg}

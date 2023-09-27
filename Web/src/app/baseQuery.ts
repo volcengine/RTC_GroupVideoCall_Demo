@@ -1,5 +1,5 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { HOST } from '@/appConfig';
+import { HOST } from '@/config';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: HOST,
