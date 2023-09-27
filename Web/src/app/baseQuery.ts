@@ -1,8 +1,8 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { HOST, BOE_HOST, isProd } from '@/config';
+import { HOST } from '@/config';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: isProd ? HOST : BOE_HOST,
+  baseUrl: HOST,
   mode: 'cors',
 });
 

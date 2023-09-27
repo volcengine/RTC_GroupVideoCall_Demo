@@ -1,9 +1,5 @@
 import { AudioProfileType } from '@volcengine/rtc';
 
-export const BOE_HOST = 'https://rtc-test.bytedance.com/vertc_demo';
-
-export const HOST = 'https://rtc.bytedance.com/vertc_demo';
-
 export const isProd = location.origin.includes('demo.volcvideo.com');
 
 export const DEMO_VERSION = '1.1.1';
@@ -77,3 +73,9 @@ export const AudioProfile = [
 ];
 
 export const MAX_PLAYERS = 4;
+
+export const HOST = 'your_own_host_url';
+export const appId = 'your_app_id';
+export const appKey = 'your_app_key';
+export const volcAk = 'your_volc_ak';
+export const volcSk = 'your_volc_sk';
