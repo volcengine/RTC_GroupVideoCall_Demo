@@ -9,6 +9,7 @@ import ArrowIcon from '@/assets/img/Arrow.svg';
 import { RootState } from '@/store';
 import { updateSelectedDevice } from '@/store/slices/device';
 import RtcClient from '@/lib/RtcClient';
+import TeaClient from '@/lib/TeaClient';
 
 interface DeviceButtonProps {
   deviceType: 'camera' | 'microphone';
@@ -51,6 +52,15 @@ function DeviceButton(props: DeviceButtonProps) {
   };
 
   const handleDeviceChange = (e: RadioChangeEvent) => {
+    if (deviceType === 'microphone') {
+      TeaClient.reportSwitchMicrophone(
+        e.target.value,
+        devices.selectedMicrophone,
+        devices.audioInputs
+      );
+    } else {
+      TeaClient.reportSwitchCamera(e.target.value, devices.selectedCamera, devices.videoInputs);
+    }
     RtcClient.switchDevice(deviceType, e.target.value);
 
     dispatch(

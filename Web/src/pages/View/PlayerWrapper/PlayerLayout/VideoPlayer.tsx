@@ -29,6 +29,10 @@ function VideoPlayer(props: IProps) {
     return !!(user?.publishVideo || user?.publishAudio);
   }, [user?.publishVideo, user?.publishAudio]);
 
+  const startPublishVideo = useMemo(() => {
+    return !!user?.publishVideo;
+  }, [user?.publishVideo]);
+
   useEffect(() => {
     RtcClient.setVideoPlayer((user as IUser).userId!, domId);
     return () => {
@@ -56,9 +60,11 @@ function VideoPlayer(props: IProps) {
         visibility: user ? 'visible' : 'hidden',
       }}
     >
-      <div className={styles.userAvatar}>
-        <span>{user?.username?.[0]}</span>
-      </div>
+      {!startPublishVideo && (
+        <div className={styles.userAvatar}>
+          <span>{user?.username?.[0]}</span>
+        </div>
+      )}
       <div
         id={domId}
         className={styles.videoPlayer}
@@ -82,7 +88,6 @@ function VideoPlayer(props: IProps) {
         )}
 
         {isUserShare && <Icon src={getIcon('shareScreen')} className={styles.userScreen} />}
-
         <span className={styles.usernameWrapper}>
           <span className={styles.username}>{user?.username}</span>
           {isLocalUser ? `(${t('Me')})` : ''}

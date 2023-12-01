@@ -12,6 +12,7 @@ import { getIcon } from '@/components/MediaButton/utils';
 import Utils from '@/utils/utils';
 import { useJoin, useGetDevicePermission } from '../../lib/useCommon';
 import Setting from '../View/BottomMenu/Setting';
+import TeaClient, { TeaEventSource } from '@/lib/TeaClient';
 
 export interface FormProps {
   username: string;
@@ -63,6 +64,14 @@ export default function () {
 
   const getTransKey = (media: DeviceType, enable: boolean) => {
     return `${media}${enable ? 'Enabled' : 'Disabled'}`;
+  };
+
+  const handleCameraPermChange = (toOn: boolean) => {
+    TeaClient.reportToggleCameraButton(toOn, TeaEventSource.LOGIN_PAGE);
+  };
+
+  const handleMicrophonePermChange = (toOn: boolean) => {
+    TeaClient.reportToggleMicrophoneButton(toOn, TeaEventSource.LOGIN_PAGE);
   };
 
   useEffect(() => {
@@ -156,12 +165,18 @@ export default function () {
                       disableMsg={
                         MediaName[media] === 'camera' ? t('noCameraPerm') : t('noMicPerm')
                       }
+                      onChange={
+                        MediaName[media] === 'camera'
+                          ? handleCameraPermChange
+                          : handleMicrophonePermChange
+                      }
+                      className={styles.loginButton}
                     />
                   </Form.Item>
                 );
               })}
               <Form.Item noStyle>
-                <Setting btnClassName=" " iconClassName={styles.mediaIcon} />
+                <Setting btnClassName={styles.loginButton} iconClassName={styles.mediaIcon} />
               </Form.Item>
             </div>
 

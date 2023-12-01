@@ -12,10 +12,13 @@ import styles from './index.module.less';
 import { RootState } from '@/store';
 import { beautyExtension } from '@/lib/RtcClient';
 import { setBeauty } from '@/store/slices/room';
+import TeaClient from '@/lib/TeaClient';
 
 interface BeautifyButtonProps {
   shared?: boolean;
 }
+
+let teaReportTimer: any = null;
 
 function BeautifyButton(props: BeautifyButtonProps) {
   const { shared } = props;
@@ -40,7 +43,7 @@ function BeautifyButton(props: BeautifyButtonProps) {
     setShowOptions(!showOptions);
   };
 
-  const hanndelBeauty = (mode: EffectBeautyMode, value: number) => {
+  const handleBeauty = (mode: EffectBeautyMode, value: number) => {
     if (mode === EffectBeautyMode.EFFECT_WHITE_MODE) {
       setWhite(value);
     }
@@ -51,13 +54,21 @@ function BeautifyButton(props: BeautifyButtonProps) {
       setSharpen(value);
     }
     beautyExtension.setBeautyIntensity(mode, value / 100);
+
+    clearTimeout(teaReportTimer);
+
+    teaReportTimer = setTimeout(() => {
+      TeaClient.reportUpdateBeautyOptions(mode, white, smooth, sharpen);
+    }, 1000);
   };
 
   const handleStartBeauty = () => {
     if (beautyOn) {
+      TeaClient.reportToggleBeauty(false);
       dispatch(setBeauty(false));
       beautyExtension.disableBeauty();
     } else {
+      TeaClient.reportToggleBeauty(true);
       dispatch(setBeauty(true));
       beautyExtension.enableBeauty();
     }
@@ -104,21 +115,21 @@ function BeautifyButton(props: BeautifyButtonProps) {
             <span>{t('White')}</span>
             <Slider
               value={white}
-              onChange={(v) => hanndelBeauty(EffectBeautyMode.EFFECT_WHITE_MODE, v)}
+              onChange={(v) => handleBeauty(EffectBeautyMode.EFFECT_WHITE_MODE, v)}
             />
           </div>
           <div className={styles.beautyItem}>
             <span>{t('Smooth')}</span>
             <Slider
               value={smooth}
-              onChange={(v) => hanndelBeauty(EffectBeautyMode.EFFECT_SMOOTH_MODE, v)}
+              onChange={(v) => handleBeauty(EffectBeautyMode.EFFECT_SMOOTH_MODE, v)}
             />
           </div>
           <div className={styles.beautyItem}>
             <span>{t('Sharpen')}</span>
             <Slider
               value={sharpen}
-              onChange={(v) => hanndelBeauty(EffectBeautyMode.EFFECT_SHARPEN_MODE, v)}
+              onChange={(v) => handleBeauty(EffectBeautyMode.EFFECT_SHARPEN_MODE, v)}
             />
           </div>
         </div>

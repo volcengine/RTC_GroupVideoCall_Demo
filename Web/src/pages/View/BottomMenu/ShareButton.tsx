@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Radio, RadioChangeEvent, message as Message, Modal, Button } from 'antd';
-import { StreamIndex } from '@volcengine/rtc';
 import { useTranslation } from 'react-i18next';
 import { ExclamationOutlined } from '@ant-design/icons';
 import MediaButton from '@/components/MediaButton';
@@ -11,8 +10,9 @@ import ArrowIcon from '@/assets/img/Arrow.svg';
 import { RootState } from '@/store';
 import RtcClient from '@/lib/RtcClient';
 import { startShare } from '@/store/slices/room';
-import { RESOLUTIOIN_LIST } from '@/config';
+import { RESOLUTIOIN_LIST, CLARITY_RESOLUTION, FLUENCY_RESOLUTION } from '@/config';
 import { updateShareConfig } from '@/store/slices/stream';
+import TeaClient from '@/lib/TeaClient';
 
 interface ShareButtonProps {
   shared?: boolean;
@@ -58,9 +58,10 @@ function ShareButton(props: ShareButtonProps) {
   const handleShare = async () => {
     const res = await RtcClient.startScreenCapture();
     if (res === 'success') {
+      TeaClient.reportStartScreenSharing();
       dispatch(startShare({ shareUser: room.localUser?.userId }));
     } else {
-      console.error(res);
+      TeaClient.reportStopScreenSharing();
       if (!isLocalUserShared && res === 'Permission denied') {
         RtcClient.sendServerMessage('videocallEndShareScreen');
       }
@@ -68,6 +69,8 @@ function ShareButton(props: ShareButtonProps) {
   };
 
   const handleShareScreen = async () => {
+    TeaClient.reportToggleShareScreen();
+
     setShowOptions(false);
     if (shareLoadingRef.current) {
       return;
@@ -101,12 +104,24 @@ function ShareButton(props: ShareButtonProps) {
     setShowOptions(!showOptions);
   };
 
-  const handleShareScreenConfigChange = (e: RadioChangeEvent) => {
+  const handleShareScreenConfigChange = async (e: RadioChangeEvent) => {
     const newConfig = e.target.value;
 
     const encodeConfig = RESOLUTIOIN_LIST.find((resolution) => resolution.text === newConfig);
 
-    RtcClient.setVideoEncoderConfig(StreamIndex.STREAM_INDEX_SCREEN, encodeConfig!.val);
+    if (newConfig === CLARITY_RESOLUTION) {
+      TeaClient.reportSwitchShareScreenPreferenceToClarity(true);
+    } else {
+      TeaClient.reportSwitchShareScreenPreferenceToClarity(false);
+    }
+
+    const screenEncoderConfig = {
+      ...encodeConfig!.val,
+      contentHint: newConfig === CLARITY_RESOLUTION ? 'text' : 'motion',
+    };
+
+    // @ts-expect-error make sure contentHint of screenEncoderConfig works
+    await RtcClient.setScreenEncoderConfig(screenEncoderConfig);
 
     setShowOptions(false);
 
@@ -140,8 +155,8 @@ function ShareButton(props: ShareButtonProps) {
       >
         <div className={styles.mediaDevicesContent}>
           <Radio.Group onChange={handleShareScreenConfigChange} value={shareScreenConfig}>
-            <Radio value="1280 * 720">{t('ClarityPreferred')}</Radio>
-            <Radio value="640 * 360">{t('FluencyPreferred')}</Radio>
+            <Radio value={CLARITY_RESOLUTION}>{t('ClarityPreferred')}</Radio>
+            <Radio value={FLUENCY_RESOLUTION}>{t('FluencyPreferred')}</Radio>
           </Radio.Group>
         </div>
       </div>

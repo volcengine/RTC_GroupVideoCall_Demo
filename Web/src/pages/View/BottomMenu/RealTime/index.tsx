@@ -8,6 +8,7 @@ import DataCard, { AudioRealTime, VideoRealTime } from './DataCard';
 import { RootState } from '@/store';
 
 import styles from './index.module.less';
+import TeaClient from '@/lib/TeaClient';
 
 interface RealTimeProps {
   shared?: boolean;
@@ -68,6 +69,12 @@ function RealTime(props: RealTimeProps) {
 
   const handleClose = () => {
     setModalVisible(false);
+    TeaClient.reportToggleStatisticMenu(false);
+  };
+
+  const switchDataType = (e: any) => {
+    setDataType(e.target.value);
+    TeaClient.reportToggleStatisticMediaType(e.target.value);
   };
 
   return (
@@ -79,6 +86,7 @@ function RealTime(props: RealTimeProps) {
         icon={getIcon('realtime')}
         onClick={() => {
           setModalVisible(true);
+          TeaClient.reportToggleStatisticMenu(true);
         }}
       />
 
@@ -95,7 +103,7 @@ function RealTime(props: RealTimeProps) {
         onOk={handleClose}
         onCancel={handleClose}
       >
-        <Radio.Group onChange={(e) => setDataType(e.target.value)} value={dataType}>
+        <Radio.Group onChange={switchDataType} value={dataType}>
           <Radio value="video">{t('Video')}</Radio>
           <Radio value="audio">{t('Audio')}</Radio>
         </Radio.Group>

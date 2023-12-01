@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { message as Message } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { MediaType, StreamIndex } from '@volcengine/rtc';
+import { MediaType } from '@volcengine/rtc';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
@@ -10,6 +10,7 @@ import { useFreeLogin } from './loginHook';
 import { useJoinRTMMutation } from '@/app/roomQuery';
 import Utils from '@/utils/utils';
 import RtcClient, { beautyExtension } from '@/lib/RtcClient';
+import TeaClient, { TeaEventSource } from '@/lib/TeaClient';
 import { BusinessId, RESOLUTIOIN_LIST, isDev } from '@/config';
 import {
   localJoinRoom,
@@ -50,7 +51,7 @@ export const useGetDevicePermission = () => {
       dispatch(setDevicePermissions(permission));
       setPermission(permission);
     })();
-  }, []);
+  }, [dispatch]);
   return permission;
 };
 
@@ -80,14 +81,41 @@ export const useJoin = (): [
     }
 
     setJoining(true);
+    let freeLoginRes = null;
 
     try {
-      const freeLoginRes = await freeLoginApi(formValues.username);
+      freeLoginRes = await freeLoginApi(formValues.username);
+
+      TeaClient.updateLoginInfo({
+        user_id: freeLoginRes.user_id,
+        user_name: freeLoginRes.user_name,
+        room_id: formValues.roomId,
+        device_id: Utils.getDeviceId(),
+      });
 
       if (!freeLoginRes.login_token) {
+        const failureReason = `No login token ${JSON.stringify(freeLoginRes)}`;
+        TeaClient.reportUserLogin(
+          false,
+          failureReason,
+          fromRefresh ? TeaEventSource.PAGE_REFRESH : TeaEventSource.LOGIN_PAGE
+        );
         return;
       }
+      TeaClient.reportUserLogin(true, '', fromRefresh ? 'page_refresh' : 'login_button');
+    } catch (e: any) {
+      const failureReason = e?.toString() || 'unknown';
+      TeaClient.reportUserLogin(
+        false,
+        failureReason,
+        fromRefresh ? TeaEventSource.PAGE_REFRESH : TeaEventSource.LOGIN_PAGE
+      );
+      console.error(e);
+      setJoining(false);
+      return;
+    }
 
+    try {
       const joinRtsRes = await joinRTM({
         login_token: freeLoginRes.login_token,
         device_id: Utils.getDeviceId(),
@@ -165,14 +193,18 @@ export const useJoin = (): [
               response.app_id
             )
           )
-          .catch((err) => console.error('err', err));
+          .catch((err: any) => {
+            console.error('err', err);
+            const failureReason = err?.toString() || 'unknown';
+            TeaClient.reportRTCSdkAPIFailure('sendServerMessage', failureReason);
+          });
       }
 
       RtcClient.setAudioProfile(streamConfig.audioProfile);
       const encodeConfig = RESOLUTIOIN_LIST.find(
         (resolution) => resolution.text === streamConfig.videoEncodeConfig
       );
-      RtcClient.setVideoEncoderConfig(StreamIndex.STREAM_INDEX_MAIN, encodeConfig!.val);
+      await RtcClient.setVideoEncoderConfig(encodeConfig!.val);
       await RtcClient.joinRoom(joinRes.response.rtc_token, formValues.username);
 
       const mediaDevices = await RtcClient.getDevices();
@@ -233,8 +265,10 @@ export const useJoin = (): [
       setJoining(false);
 
       navigate(`/?roomId=${formValues.roomId}`);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      const failureReason = e?.toString() || 'unknown';
+      TeaClient.reportDemoInternalException(failureReason);
       setJoining(false);
     }
   }
