@@ -11,6 +11,7 @@ import ShareButton from './ShareButton';
 import StopShareBtn from './StopShareBtn';
 import { updateLocalUser } from '@/store/slices/room';
 import BeautifyButton from './BeautifyButton';
+import TeaClient, { TeaEventSource } from '@/lib/TeaClient';
 
 function BottomMenu() {
   const dispatch = useDispatch();
@@ -31,13 +32,23 @@ function BottomMenu() {
     );
 
     if (deviceType === 'camera') {
-      !room.localUser![publishType] ? RtcClient.startVideoCapture() : RtcClient.stopVideoCapture();
+      if (!room.localUser![publishType]) {
+        TeaClient.reportToggleCameraButton(true, TeaEventSource.VIEW_PAGE);
+        RtcClient.startVideoCapture();
+      } else {
+        TeaClient.reportToggleCameraButton(false, TeaEventSource.VIEW_PAGE);
+        RtcClient.stopVideoCapture();
+      }
     }
 
     if (deviceType === 'microphone') {
-      !room.localUser![publishType]
-        ? RtcClient.publishStream(MediaType.AUDIO)
-        : RtcClient.unpublishStream(MediaType.AUDIO);
+      if (!room.localUser![publishType]) {
+        TeaClient.reportToggleMicrophoneButton(true, TeaEventSource.VIEW_PAGE);
+        RtcClient.publishStream(MediaType.AUDIO);
+      } else {
+        TeaClient.reportToggleMicrophoneButton(false, TeaEventSource.VIEW_PAGE);
+        RtcClient.unpublishStream(MediaType.AUDIO);
+      }
     }
   };
 

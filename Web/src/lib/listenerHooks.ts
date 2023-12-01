@@ -146,9 +146,6 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
   };
 
   const handleRemoteStreamStats = (e: RemoteStreamStats) => {
-    if (isDev) {
-      return;
-    }
     dispatch(
       updateRemoteUser({
         userId: e.userId,
@@ -159,9 +156,6 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
   };
 
   const handleLocalStreamStats = (e: LocalStreamStats) => {
-    if (isDev) {
-      return;
-    }
     dispatch(
       updateLocalUser({
         audioStats: e.audioStats,
@@ -171,9 +165,6 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
   };
 
   const handleLocalAudioPropertiesReport = (e: LocalAudioPropertiesInfo[]) => {
-    if (isDev) {
-      return;
-    }
     const localAudioInfo = e.find(
       (audioInfo) => audioInfo.streamIndex === StreamIndex.STREAM_INDEX_MAIN
     );
@@ -187,9 +178,6 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
   };
 
   const handleRemoteAudioPropertiesReport = (e: RemoteAudioPropertiesInfo[]) => {
-    if (isDev) {
-      return;
-    }
     const remoteAudioInfo = e
       .filter((audioInfo) => audioInfo.streamKey.streamIndex === StreamIndex.STREAM_INDEX_MAIN)
       .map((audioInfo) => ({
@@ -210,7 +198,7 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
       deviceId = devices.videoInputs?.[0].deviceId || '';
     }
 
-    RtcClient.switchDevice('camera', deviceId);
+    await RtcClient.switchDevice('camera', deviceId);
     dispatch(setCameraList(devices.videoInputs));
     dispatch(
       updateSelectedDevice({
@@ -227,7 +215,7 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
       if (device.deviceState === 'inactive') {
         deviceId = devices.audioInputs?.[0].deviceId || '';
       }
-      RtcClient.switchDevice('microphone', deviceId);
+      await RtcClient.switchDevice('microphone', deviceId);
       dispatch(setMicrophoneList(devices.audioInputs));
 
       dispatch(
@@ -267,7 +255,7 @@ const useRtcListeners = (isDev: boolean): IEventListener => {
         await RtcClient.stopAudioCapture();
         await RtcClient.stopVideoCapture();
         await RtcClient.stopScreenCapture();
-        RtcClient.leaveRoom();
+        await RtcClient.leaveRoom();
         Utils.removeLoginInfo();
         dispatch(localLeaveRoom());
         dispatch(resetConfig());

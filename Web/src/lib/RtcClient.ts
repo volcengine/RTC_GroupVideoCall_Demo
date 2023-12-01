@@ -19,11 +19,13 @@ import VERTC, {
   TrackCaptureConfig,
   AutoPlayFailedEvent,
   PlayerEvent,
+  ScreenEncoderConfig,
 } from '@volcengine/rtc';
 import { v4 as uuid } from 'uuid';
 import RTCBeautyExtension from '@volcengine/rtc/extension-beauty';
 import Utils from '@/utils/utils';
 import { BasicBody } from '@/app/baseQuery';
+import TeaClient from '@/lib/TeaClient';
 
 export interface IEventListener {
   handleTrackEnded: (e: { kind: string; isScreen: boolean }) => void;
@@ -83,6 +85,35 @@ const DefaultEncoderConfig = {
 
 export const beautyExtension = new RTCBeautyExtension();
 
+export const RtcSdkApiWrapper = async (sdkApiName: string, sdkApiCall: Function) => {
+  try {
+    sdkApiCall = sdkApiCall.bind(this);
+    const result = sdkApiCall();
+
+    // async function
+    if (result && result instanceof Promise) {
+      return result.catch((error: any) => {
+        TeaClient.reportRTCSdkAPIFailure(sdkApiName, JSON.stringify(error));
+        return Promise.reject(error);
+      });
+    }
+
+    // sync function
+    return result;
+  } catch (error: any) {
+    const failureReason = error?.toString() || 'unknown';
+    TeaClient.reportRTCSdkException(
+      JSON.stringify({
+        error: failureReason,
+        sdkApiName,
+      })
+    );
+
+    // still throw to print on console
+    throw error;
+  }
+};
+
 export class RtcClient {
   engine!: IRTCEngine;
 
@@ -109,20 +140,33 @@ export class RtcClient {
       user_id: props.rtsUid,
       login_token: Utils.getLoginToken(),
     };
-    this.engine = VERTC.createEngine(this.config.appId);
+
+    this.engine = await RtcSdkApiWrapper('createEngine', () => {
+      return VERTC.createEngine(this.config.appId);
+    });
+
     try {
-      await this.engine.registerExtension(beautyExtension);
+      await this.engine.registerExtension(beautyExtension).catch((e) => {
+        TeaClient.reportRTCSdkAPIFailure('registerExtension', JSON.stringify(e));
+        throw e;
+      });
       beautyExtension.disableBeauty();
       this.beautyEnabled = true;
-    } catch (error) {
-      console.error((error as any).message);
+    } catch (e) {
+      console.error((e as any).message);
       this.beautyEnabled = false;
+      TeaClient.reportRTCSdkException((e as any).message);
     }
   };
 
   joinWithRTS = async () => {
-    await this.engine.login(this.config.rtmToken, this.config.rtsUid);
-    await this.engine.setServerParams(this.config.serverSignature, this.config.serverUrl);
+    await RtcSdkApiWrapper('login', () => {
+      return this.engine.login(this.config.rtmToken, this.config.rtsUid);
+    });
+
+    await RtcSdkApiWrapper('setServerParams', () => {
+      return this.engine.setServerParams(this.config.serverSignature, this.config.serverUrl);
+    });
   };
 
   sendServerMessage = async (eventname: string) => {
@@ -158,7 +202,9 @@ export class RtcClient {
 
       this.engine.on(VERTC.events.onUserMessageReceivedOutsideRoom, callback);
 
-      this.engine.sendServerMessage(JSON.stringify(content));
+      RtcSdkApiWrapper('sendServerMessage', () => {
+        return this.engine.sendServerMessage(JSON.stringify(content));
+      });
     });
   };
 
@@ -214,28 +260,37 @@ export class RtcClient {
 
   joinRoom = (token: string | null, username: string): Promise<void> => {
     this.engine.enableAudioPropertiesReport({ interval: 2000 });
-    return this.engine.joinRoom(
-      token,
-      `${this.config.roomId!}`,
-      {
-        userId: this.config.uid!,
-        extraInfo: JSON.stringify({
-          user_name: username,
-          user_id: this.config.uid,
-        }),
-      },
-      {
-        isAutoPublish: true,
-        isAutoSubscribeAudio: true,
-        isAutoSubscribeVideo: true,
-        roomProfileType: RoomProfileType.meeting,
-      }
-    );
+
+    return RtcSdkApiWrapper('joinRoom', () => {
+      return this.engine.joinRoom(
+        token,
+        `${this.config.roomId!}`,
+        {
+          userId: this.config.uid!,
+          extraInfo: JSON.stringify({
+            user_name: username,
+            user_id: this.config.uid,
+          }),
+        },
+        {
+          isAutoPublish: true,
+          isAutoSubscribeAudio: true,
+          isAutoSubscribeVideo: true,
+          roomProfileType: RoomProfileType.meeting,
+        }
+      );
+    });
   };
 
-  leaveRoom = () => {
-    this.engine.leaveRoom();
-    VERTC.destroyEngine(this.engine);
+  leaveRoom = async () => {
+    await RtcSdkApiWrapper('leaveRoom', () => {
+      this.engine.leaveRoom();
+    });
+
+    await RtcSdkApiWrapper('destroyEngine', () => {
+      VERTC.destroyEngine(this.engine);
+    });
+
     this._videoCaptureDevice = undefined;
     this._audioCaptureDevice = undefined;
     this._audioPlaybackDevice = undefined;
@@ -290,40 +345,45 @@ export class RtcClient {
   }
 
   startAudioCapture = async (mic?: string) => {
-    await this.engine.startAudioCapture(mic || this._audioCaptureDevice);
+    await RtcSdkApiWrapper('startAudioCapture', () => {
+      return this.engine.startAudioCapture(mic || this._audioCaptureDevice);
+    });
   };
 
   stopAudioCapture = async () => {
-    await this.engine.stopAudioCapture();
+    await RtcSdkApiWrapper('stopAudioCapture', () => {
+      return this.engine.stopAudioCapture();
+    });
   };
 
   startVideoCapture = async (camera?: string) => {
-    // 4.51 后废弃
-    // this.engine.setVideoCaptureConfig(this._captureConfig);
-
-    this.engine.setVideoEncoderConfig(this._encoderConfig);
+    await RtcSdkApiWrapper('setVideoEncoderConfig', () => {
+      return this.engine.setVideoEncoderConfig(this._encoderConfig);
+    });
 
     this._videoCaptureDevice = camera || this._videoCaptureDevice;
 
-    await this.engine.startVideoCapture(this._videoCaptureDevice);
+    await RtcSdkApiWrapper('startVideoCapture', () => {
+      return this.engine.startVideoCapture(this._videoCaptureDevice);
+    });
   };
-
-  // 4.51 后废弃
-  //   setVideoCaptureConfig = async (config: TrackCaptureConfig) => {
-  //     this._captureConfig = config;
-  //     this.engine.setVideoCaptureConfig(config);
-  //   };
 
   stopVideoCapture = async () => {
-    await this.engine.stopVideoCapture();
+    await RtcSdkApiWrapper('stopVideoCapture', () => {
+      return this.engine.stopVideoCapture();
+    });
   };
 
-  publishStream = (mediaType: MediaType) => {
-    this.engine.publishStream(mediaType);
+  publishStream = async (mediaType: MediaType) => {
+    await RtcSdkApiWrapper('publishStream', () => {
+      return this.engine.publishStream(mediaType);
+    });
   };
 
-  unpublishStream = (mediaType: MediaType) => {
-    this.engine.unpublishStream(mediaType);
+  unpublishStream = async (mediaType: MediaType) => {
+    await RtcSdkApiWrapper('unpublishStream', () => {
+      return this.engine.unpublishStream(mediaType);
+    });
   };
 
   /**
@@ -333,19 +393,23 @@ export class RtcClient {
    */
   setVideoPlayer = (userId: string, renderDom?: string | HTMLElement) => {
     // 本端用户
-    if (userId === this.config.uid) {
-      this.engine.setLocalVideoPlayer(StreamIndex.STREAM_INDEX_MAIN, {
-        renderDom,
-        userId,
-        renderMode: VideoRenderMode.RENDER_MODE_FIT,
+    if (this.config && userId === this.config.uid) {
+      RtcSdkApiWrapper('setLocalVideoPlayer', () => {
+        return this.engine.setLocalVideoPlayer(StreamIndex.STREAM_INDEX_MAIN, {
+          renderDom,
+          userId,
+          renderMode: VideoRenderMode.RENDER_MODE_FIT,
+        });
       });
     }
     // 远端用户
     else {
-      this.engine.setRemoteVideoPlayer(StreamIndex.STREAM_INDEX_MAIN, {
-        renderDom,
-        userId,
-        renderMode: VideoRenderMode.RENDER_MODE_FIT,
+      RtcSdkApiWrapper('setRemoteVideoPlayer', () => {
+        return this.engine.setRemoteVideoPlayer(StreamIndex.STREAM_INDEX_MAIN, {
+          renderDom,
+          userId,
+          renderMode: VideoRenderMode.RENDER_MODE_FIT,
+        });
       });
     }
   };
@@ -357,19 +421,23 @@ export class RtcClient {
    */
   setScreenPlayer = (userId: string, renderDom?: string | HTMLElement) => {
     // 本端用户
-    if (userId === this.config.uid) {
-      this.engine.setLocalVideoPlayer(StreamIndex.STREAM_INDEX_SCREEN, {
-        renderDom,
-        userId,
-        renderMode: VideoRenderMode.RENDER_MODE_FIT,
+    if (this.config && userId === this.config.uid) {
+      RtcSdkApiWrapper('setLocalVideoPlayer', () => {
+        return this.engine.setLocalVideoPlayer(StreamIndex.STREAM_INDEX_SCREEN, {
+          renderDom,
+          userId,
+          renderMode: VideoRenderMode.RENDER_MODE_FIT,
+        });
       });
     }
     // 远端用户
     else {
-      this.engine.setRemoteVideoPlayer(StreamIndex.STREAM_INDEX_SCREEN, {
-        renderDom,
-        userId,
-        renderMode: VideoRenderMode.RENDER_MODE_FIT,
+      RtcSdkApiWrapper('setRemoteVideoPlayer', () => {
+        return this.engine.setRemoteVideoPlayer(StreamIndex.STREAM_INDEX_SCREEN, {
+          renderDom,
+          userId,
+          renderMode: VideoRenderMode.RENDER_MODE_FIT,
+        });
       });
     }
   };
@@ -379,7 +447,9 @@ export class RtcClient {
    * @param userId
    */
   subscribeScreen = async (userId: string): Promise<void> => {
-    await this.engine.subscribeScreen(userId, MediaType.AUDIO_AND_VIDEO);
+    await RtcSdkApiWrapper('subscribeScreen', () => {
+      return this.engine.subscribeScreen(userId, MediaType.AUDIO_AND_VIDEO);
+    });
   };
 
   /**
@@ -387,7 +457,9 @@ export class RtcClient {
    * @param businessId
    */
   setBusinessId = (businessId: string) => {
-    this.engine.setBusinessId(businessId);
+    RtcSdkApiWrapper('subscribeScreen', () => {
+      return this.engine.setBusinessId(businessId);
+    });
   };
 
   /**
@@ -395,13 +467,24 @@ export class RtcClient {
    */
   startScreenCapture = async () => {
     try {
-      await this.engine.startScreenCapture({
-        enableAudio: true,
+      await this.engine
+        .startScreenCapture({
+          enableAudio: true,
+        })
+        .catch((e) => {
+          TeaClient.reportRTCSdkAPIFailure('startScreenCapture', JSON.stringify(e));
+          throw e;
+        });
+
+      await this.engine.publishScreen(MediaType.AUDIO_AND_VIDEO).catch((e) => {
+        TeaClient.reportRTCSdkAPIFailure('publishScreen', JSON.stringify(e));
       });
-      await this.engine.publishScreen(MediaType.AUDIO_AND_VIDEO);
       return 'success';
     } catch (e: any) {
-      return e?.error?.message || e?.code || 'Screen Capture Failed';
+      const failureReason = e?.error?.message || e?.code || 'Screen Capture Failed';
+      TeaClient.reportRTCSdkException(failureReason);
+
+      return failureReason;
     }
   };
 
@@ -409,8 +492,13 @@ export class RtcClient {
    * 停止屏幕共享
    */
   stopScreenCapture = async () => {
-    await this.engine.stopScreenCapture();
-    await this.engine.unpublishScreen(MediaType.AUDIO_AND_VIDEO);
+    await RtcSdkApiWrapper('stopScreenCapture', () => {
+      return this.engine.stopScreenCapture();
+    });
+
+    await RtcSdkApiWrapper('unpublishScreen', () => {
+      return this.engine.unpublishScreen(MediaType.AUDIO_AND_VIDEO);
+    });
   };
 
   /**
@@ -418,14 +506,18 @@ export class RtcClient {
    * @param mirrorType
    */
   setMirrorType = (mirrorType: MirrorType) => {
-    this.engine.setLocalVideoMirrorType(mirrorType);
+    RtcSdkApiWrapper('setLocalVideoMirrorType', () => {
+      return this.engine.setLocalVideoMirrorType(mirrorType);
+    });
   };
 
   /**
    * 设置音质档位
    */
   setAudioProfile = (profile: AudioProfileType) => {
-    this.engine.setAudioProfile(profile);
+    RtcSdkApiWrapper('setAudioProfile', () => {
+      return this.engine.setAudioProfile(profile);
+    });
   };
 
   /**
@@ -433,26 +525,44 @@ export class RtcClient {
    * @param streamIndex
    * @param descriptions
    */
-  setVideoEncoderConfig = (streamIndex: StreamIndex, descriptions: VideoEncoderConfig) => {
-    if (streamIndex === StreamIndex.STREAM_INDEX_MAIN) {
-      this.engine.setVideoEncoderConfig(descriptions);
-    } else {
-      this.engine.setScreenEncoderConfig(descriptions);
-    }
-
+  setVideoEncoderConfig = async (descriptions: VideoEncoderConfig) => {
+    RtcSdkApiWrapper('setVideoEncoderConfig', () => {
+      return this.engine.setVideoEncoderConfig(descriptions);
+    });
     this._encoderConfig = descriptions;
+  };
+
+  /**
+   * 设置屏幕共享画质
+   * @param streamIndex
+   * @param descriptions
+   */
+  setScreenEncoderConfig = async (descriptions: ScreenEncoderConfig) => {
+    RtcSdkApiWrapper('setScreenEncoderConfig', () => {
+      return this.engine.setScreenEncoderConfig(descriptions);
+    });
+    this._encoderConfig = {
+      width: descriptions.width,
+      height: descriptions.height,
+      frameRate: descriptions.frameRate,
+      maxKbps: descriptions.maxKbps,
+    };
   };
 
   /**
    * 切换设备
    */
-  switchDevice = (deviceType: 'camera' | 'microphone', deviceId: string) => {
+  switchDevice = async (deviceType: 'camera' | 'microphone', deviceId: string) => {
     if (deviceType === 'microphone') {
       this._audioCaptureDevice = deviceId;
-      this.engine.setAudioCaptureDevice(deviceId);
+      RtcSdkApiWrapper('setAudioCaptureDevice', () => {
+        return this.engine.setAudioCaptureDevice(deviceId);
+      });
     } else {
       this._videoCaptureDevice = deviceId;
-      this.engine.setVideoCaptureDevice(deviceId);
+      RtcSdkApiWrapper('setVideoCaptureDevice', () => {
+        return this.engine.setVideoCaptureDevice(deviceId);
+      });
     }
   };
 }

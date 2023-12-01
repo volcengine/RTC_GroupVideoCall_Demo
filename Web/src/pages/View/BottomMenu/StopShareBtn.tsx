@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import RtcClient from '@/lib/RtcClient';
 import { stopShare } from '@/store/slices/room';
 import styles from './index.module.less';
+import TeaClient from '@/lib/TeaClient';
 
 function StopShareBtn() {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ function StopShareBtn() {
   const handleStopShare = async () => {
     RtcClient.sendServerMessage('videocallEndShareScreen');
     await RtcClient.stopScreenCapture();
+    TeaClient.reportStopScreenSharing();
     dispatch(stopShare());
   };
 

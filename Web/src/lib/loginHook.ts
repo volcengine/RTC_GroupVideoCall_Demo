@@ -19,9 +19,14 @@ export const useFreeLogin = (): {
           return res?.data.response;
         }
       }
-      return {};
+
+      return {
+        res: JSON.stringify(res),
+      };
     } catch (err) {
-      return {};
+      return {
+        err,
+      };
     }
   };
 

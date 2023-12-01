@@ -10,6 +10,7 @@ import { AudioProfile, RESOLUTIOIN_LIST } from '@/config';
 import { RootState } from '@/store';
 import { updateAllStreamConfig } from '@/store/slices/stream';
 import styles from './index.module.less';
+import TeaClient from '@/lib/TeaClient';
 
 interface SettingProps {
   shared?: boolean;
@@ -31,30 +32,20 @@ function Setting(props: SettingProps) {
       mirror: +formValues.mirror,
     };
 
-    // if (stream.mirror !== newStreamConfig.mirror) {
-    //   RtcClient.setMirrorType(newStreamConfig.mirror);
-    // }
-
-    // if (stream.audioProfile !== newStreamConfig.audioProfile) {
-    //   RtcClient.setAudioProfile(newStreamConfig.audioProfile);
-    // }
-
-    // if (stream.videoEncodeConfig !== newStreamConfig.videoEncodeConfig) {
-    //   const encodeConfig = RESOLUTIOIN_LIST.find(
-    //     (resolution) => resolution.text === newStreamConfig.videoEncodeConfig
-    //   );
-    //   RtcClient.setVideoCaptureConfig(encodeConfig!.val);
-    //   RtcClient.setVideoEncoderConfig(StreamIndex.STREAM_INDEX_MAIN, encodeConfig!.val);
-    // }
-
     dispatch(updateAllStreamConfig(newStreamConfig));
-
+    TeaClient.reportUpdateSettingOptions(
+      newStreamConfig.videoEncodeConfig,
+      newStreamConfig.audioProfile,
+      newStreamConfig.mirror
+    );
     setModalVisible(false);
+    TeaClient.reportToggleSettingMenu(false);
   };
 
   const handleCancel = () => {
     form.resetFields();
     setModalVisible(false);
+    TeaClient.reportToggleSettingMenu(false);
   };
 
   return (
@@ -66,6 +57,7 @@ function Setting(props: SettingProps) {
         icon={getIcon('setting')}
         onClick={() => {
           setModalVisible(true);
+          TeaClient.reportToggleSettingMenu(true);
         }}
       />
 
