@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
-    "@volcengine/rtc": "^4.54.0",
+    "@volcengine/rtc": "~4.58.18",
     "antd": "^4.21.7",
     "@datarangers/sdk-javascript": "0.0.4",
     "i18next": "^21.8.16",
