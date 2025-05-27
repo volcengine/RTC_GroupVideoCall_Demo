@@ -101,7 +101,7 @@ export const MAX_PLAYERS = 4;
 /**
  * @note 您可以使用 https://common.rtc.volcvideo.com/rtc_demo_special 作为测试服务器域名，仅提供跑通测试服务，无法保障正式需求。
  */
-export const HOST = 'your_own_host_url';
+export const HOST = 'https://common.rtc.volcvideo.com/rtc_demo_special';
 export const appId = 'your_app_id';
 export const appKey = 'your_app_key';
 export const volcAk = 'your_volc_ak';

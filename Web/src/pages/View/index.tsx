@@ -78,16 +78,9 @@ function View() {
     }
   }, [room.localUser.publishAudio, room.localUser.publishVideo]);
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem('store')) {
-  //     const a = sessionStorage.getItem('store');
-  //     a && alert(a);
-  //   }
-  // }, []);
   const leaveRoom = useCallback(() => {
     if (!RtcClient.engine) return;
     leave();
-    // sessionStorage.setItem('store', JSON.stringify({ test: new Date().toString() }));
   }, []);
 
   useEffect(() => {

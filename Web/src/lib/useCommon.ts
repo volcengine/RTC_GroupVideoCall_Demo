@@ -287,10 +287,11 @@ export const useLeave = () => {
     if (RtcClient.beautyEnabled) {
       beautyExtension.disableBeauty();
     }
-
-    RtcClient.stopAudioCapture();
-    RtcClient.stopVideoCapture();
-    RtcClient.stopScreenCapture();
-    RtcClient.leaveRoom();
+    await Promise.all([
+      RtcClient.stopAudioCapture(),
+      RtcClient.stopVideoCapture(),
+      RtcClient.stopScreenCapture(),
+    ]);
+    await RtcClient.leaveRoom();
   };
 };

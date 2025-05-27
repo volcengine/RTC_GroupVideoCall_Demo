@@ -48,5 +48,5 @@ yarn
 4. 启动项目
 
 ```
-yarn dev
+yarn start
 ```

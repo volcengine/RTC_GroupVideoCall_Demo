@@ -25,7 +25,8 @@ function Stop() {
     dispatch(localLeaveRoom());
     dispatch(resetConfig());
     try {
-      navigate(`/login?roomId=${room.roomId?.replace('call_', '')}`);
+      const roomId = room.roomId?.replace('call_', '');
+      roomId ? navigate(`/login?roomId=${roomId}`) : navigate('/login');
     } catch (error: any) {
       console.error('error', error);
       const failureReason = error?.toString() || 'unknown';

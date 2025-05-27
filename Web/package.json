@@ -3,19 +3,19 @@
   "version": "1.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.3",
+    "@reduxjs/toolkit": "1.8.3",
     "@volcengine/rtc": "~4.58.18",
-    "antd": "^4.21.7",
+    "antd": "4.22.2",
     "@datarangers/sdk-javascript": "0.0.4",
-    "i18next": "^21.8.16",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-i18next": "^11.18.3",
-    "react-redux": "^8.0.2",
-    "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0",
-    "redux": "^4.2.0",
-    "uuid": "^8.3.2"
+    "i18next": "21.8.16",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-i18next": "11.18.3",
+    "react-redux": "8.0.2",
+    "react-router": "6.3.0",
+    "react-router-dom": "6.3.0",
+    "redux": "4.2.0",
+    "uuid": "8.3.2"
   },
   "scripts": {
     "start": "cross-env REACT_APP_LOCAL=cn  craco start",
@@ -46,24 +46,26 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "@types/react": "18.0.15"
+  },
   "devDependencies": {
-    "@craco/craco": "^6.4.5",
-    "@types/node": "^16.11.45",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@types/uuid": "^8.3.4",
-    "craco-less": "^2.0.0",
-    "cross-env": "^7.0.3",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-babel": "^5.3.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "postcss-less": "^6.0.0",
-    "prettier": "^2.7.1",
+    "@craco/craco": "6.4.5",
+    "@types/node": "16.11.47",
+    "@types/react-dom": "18.0.6",
+    "@types/uuid": "8.3.4",
+    "craco-less": "2.0.0",
+    "cross-env": "7.0.3",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-babel": "5.3.1",
+    "eslint-plugin-prettier": "4.2.1",
+    "postcss-less": "6.0.0",
+    "prettier": "2.7.1",
     "react-scripts": "5.0.1",
-    "stylelint": "^14.9.1",
-    "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-standard": "^26.0.0",
-    "typescript": "^4.7.4"
+    "stylelint": "14.9.1",
+    "stylelint-config-prettier": "9.0.3",
+    "stylelint-config-standard": "26.0.0",
+    "typescript": "4.7.4"
   }
 }
