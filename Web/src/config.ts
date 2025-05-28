@@ -1,8 +1,8 @@
 import { AudioProfileType } from '@volcengine/rtc';
 
-export const isProd = location.origin.includes('demo.volcvideo.com');
+export const isProd = window.location.origin.includes('demo.volcvideo.com');
 export const isDev = process.env.NODE_ENV === 'development';
-export const isBoe = location.origin.includes('rtc_demo_videocall');
+export const isBoe = window.location.origin.includes('rtc_demo_videocall');
 
 export const DEMO_VERSION = '1.1.1';
 
