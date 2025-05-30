@@ -3,8 +3,9 @@
   "version": "1.1.0",
   "private": true,
   "dependencies": {
+    "@byteplus/rtc": "~4.58.20",
     "@reduxjs/toolkit": "1.8.3",
-    "@volcengine/rtc": "~4.58.19",
+    "@volcengine/rtc": "~4.58.20",
     "antd": "4.22.2",
     "@datarangers/sdk-javascript": "0.0.4",
     "i18next": "21.8.16",
